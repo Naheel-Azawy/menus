@@ -31,11 +31,11 @@ def items():
     return items
 
 def main(args):
-    items = items()
+    i = items()
     if len(args) > 0:
         sel = args[0].title()
-        if sel in items:
-            items[sel]()
+        if sel in i:
+            i[sel]()
     else:
-        dictmenu(items, "-p 'Power options'")
+        dictmenu(i, "-p 'Power options'")
     return 0
