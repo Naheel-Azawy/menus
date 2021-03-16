@@ -1,0 +1,45 @@
+* menus
+  Just some menus. A dmenu kind of menus.
+
+** Usage
+   Just run ~menus~. This will show:
+   - fixed pinned programs (will add an option later)
+   - binaries in your PATH (just like dmenu_run)
+   - keyboard shortcuts (if you have sxhkd setup with nice comments)
+   - power options (with systemctl)
+   - current program menu bar if it supports it (like HUD)
+   - a calculator (for dmenu incremental patch)
+
+   Note that recent items are also cached so that it knows what you need in the future.
+
+** Installation
+   First, make sure dependancies are installed:
+   - dmenu (preferably with the [[https://tools.suckless.org/dmenu/patches/incremental][incremental patch]])
+   - xprop
+   - xdotool
+   - systemctl (sorry)
+
+   Then:
+   #+begin_src shell
+     $ sudo pip3 install .
+   #+end_src
+
+** Setup HUD
+   Add to your ~.xinitrc~ or anywhere else you find suitable:
+   #+begin_src shell
+     eval "$(menus hud env)"
+     menus hud daemon &
+   #+end_src
+
+   [[https://github.com/p-e-w/plotinus][plotinus]] is also optionally supported. So, install it if you like. This can be helpful for some GTK programs.
+
+** Interesting stuff
+   - https://github.com/RafaelBocquet/i3-hud-menu
+   - https://github.com/tetzank/qmenu_hud
+   - https://github.com/p-e-w/plotinus
+
+** TODO
+   More details and cleanups.
+
+** License
+   GPL-3
