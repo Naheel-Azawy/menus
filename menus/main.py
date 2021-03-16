@@ -60,6 +60,9 @@ class StartMenu:
         except:
             self.recent = {}
 
+        # load power items
+        self.power = menus.power.items()
+
         # global access to the hud interface not to load
         # the interface twice
         self.hud_interface = None
@@ -110,8 +113,8 @@ class StartMenu:
 
         if kind == "power":
             sel = run.title()
-            if sel in menus.power.items:
-                menus.power.items[sel]()
+            if sel in self.power:
+                self.power[sel]()
                 self.inc(sel, kind)
 
         elif kind == "shortcuts":
@@ -211,7 +214,7 @@ class StartMenu:
                     printout(kind, item)
 
         # print power options
-        for item in menus.power.items:
+        for item in self.power:
             printout_if_needed("power", item)
 
         # print keyboard shortcuts

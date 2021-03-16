@@ -17,7 +17,6 @@ import sys
 import os
 import re
 import sh
-import pkg_resources
 from pydbus import SessionBus
 from menus.face import pipemenu
 
@@ -26,7 +25,7 @@ from menus.face import pipemenu
 # GIMP crashes sometimes and libreoffice only hides the bars but the menu
 # items are not functional, when they appear.
 hud_env = """
-PLOTINUS=$(whereis -b libplotinus | cut -d " " -f 2)'
+PLOTINUS=$(whereis -b libplotinus | cut -d " " -f 2)
 [ -f "$PLOTINUS" ] && export GTK_MODULES="$GTK_MODULES:$PLOTINUS"
 export UBUNTU_MENUPROXY=1
 """
