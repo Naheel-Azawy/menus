@@ -42,9 +42,10 @@ class StartMenu:
             self.pinned["browser"] = e if e is not None else "firefox"
 
         # programs below run in a terminal window
+        # TODO: move to some kind of config
         self.tui_apps = [
             "music-player", "lf", "vis", "corona",
-            "alsamixer", "lyrics", "nano"
+            "alsamixer", "lyrics", "nano", "dice"
         ]
 
         # personal games script. not sure whether to
