@@ -19,27 +19,27 @@ class StartMenu:
 
         # pinned items appear first
         self.pinned = {
-            "terminal": "theterm",
-            "editor":   "edit",
-            "files":    "lf",
-            "browser":  "browser"
+            "terminal": "xterm",
+            "editor":   "nano",
+            "files":    "nautilus",
+            "browser":  "firefox"
         }
 
-        if which("theterm") is None:
-            e = os.getenv("TERMINAL")
-            self.pinned["terminal"] = e if e is not None else "xterm"
+        e = os.getenv("TERMINAL")
+        if e is not None:
+            self.pinned["terminal"] = e
 
-        if which("edit") is None:
-            e = os.getenv("EDITOR")
-            self.pinned["editor"] = e if e is not None else "nano"
+        e = os.getenv("EDITOR")
+        if e is not None:
+            self.pinned["editor"] = e
 
-        if which("lf") is None:
-            e = os.getenv("FILE_MANAGER")
-            self.pinned["files"] = e if e is not None else "nautilus"
+        e = os.getenv("FILE_MANAGER")
+        if e is not None:
+            self.pinned["files"] = e
 
-        if which("browser") is None:
-            e = os.getenv("BROWSER")
-            self.pinned["browser"] = e if e is not None else "firefox"
+        e = os.getenv("BROWSER")
+        if e is not None:
+            self.pinned["browser"] = e
 
         # programs below run in a terminal window
         self.tui_apps = [
