@@ -32,8 +32,8 @@ def items():
 
 def main(args):
     i = items()
-    if len(args) > 0:
-        sel = args[0].title()
+    if len(args) > 1:
+        sel = args[1].title()
         if sel in i:
             i[sel]()
     else:

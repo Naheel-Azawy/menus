@@ -71,12 +71,12 @@ def run(keys):
     return run_from(parse_sxhkdrc(), keys)
 
 def main(args):
-    if len(args) > 0:
-        if args[0] == "-d":
+    if len(args) > 1:
+        if args[1] == "-d":
             for d in get_doc():
                 print(d)
             return 0
-        elif args[0] == "-r":
-            run(args[1])
+        elif args[1] == "-r":
+            run(args[2])
             return 0
     return 1

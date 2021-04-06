@@ -341,9 +341,9 @@ def run_now():
     return False
 
 def main(args):
-    if len(args) > 0:
-        if args[0] == "daemon":
+    if len(args) > 1:
+        if args[1] == "daemon":
             hud_daemon()
-        elif args[0] == "env":
+        elif args[1] == "env":
             print(hud_env)
     return 0

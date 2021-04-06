@@ -8,12 +8,10 @@ import menus.face
 import menus.keys
 import menus.power
 import menus.hud
+from menus.utils import nohup, handle_terminal
 
 HOME = os.getenv("HOME")
 TERMINAL = os.getenv("TERMINAL")
-
-def nohup(cmd):
-    return f"nohup {cmd} </dev/null >/dev/null 2>&1 &"
 
 class StartMenu:
     def __init__(self):
@@ -299,21 +297,6 @@ class StartMenu:
         if line:
             self.run(line)
 
-def handle_terminal(arg0, args):
-    try:
-        dim = "95x20"
-        if TERMINAL == "theterm":
-            sh.theterm("-a", f"-c __floatme__|__blurme__ -g {dim}",
-                       "python3", arg0, "--interm", *args)
-        elif TERMINAL == "st":
-            sh.st("-c", "__floatme__|__blurme__",
-                  "-g", dim, "-e", "python3", arg0, "--interm", *args)
-        else:
-            sh.Command(TERMINAL, "-e", "python3", arg0, "--interm", *args)
-    except sh.ErrorReturnCode as e:
-        pass
-    return 0
-
 def main():
     arg0 = sys.argv[0]
     args = sys.argv[1:]
@@ -323,6 +306,7 @@ def main():
     run_in_term = False
     if len(args) > 0 and args[0] == "--interm":
         menus.face.interface = "fzf"
+        menus.face.interm = True
         args = args[1:]
     elif menus.face.interface == "fzf":
         run_in_term = True
@@ -331,17 +315,20 @@ def main():
         if args[0] == "ls":
             StartMenu().ls()
         elif args[0] == "power":
-            if run_in_term: return handle_terminal(arg0, args)
-            return menus.power.main(args[1:])
+            if run_in_term:
+                return handle_terminal(["python3", arg0, "--interm"] + args)
+            return menus.power.main([arg0] + args[1:])
         elif args[0] == "hud":
-            return menus.hud.main(args[1:])
+            return menus.hud.main([arg0] + args[1:])
         elif args[0] == "keys":
-            return menus.keys.main(args[1:])
+            return menus.keys.main([arg0] + args[1:])
         elif args[0] == "face":
-            if run_in_term: return handle_terminal(arg0, args)
-            return menus.face.main(args[1:])
+            #if run_in_term:
+            #    return handle_terminal(["python3", arg0, "--interm"] + args)
+            return menus.face.main([arg0] + args[1:])
     elif len(args) == 0:
-        if run_in_term: return handle_terminal(arg0, args)
+        if run_in_term:
+            return handle_terminal(["python3", arg0, "--interm"] + args)
         StartMenu().show()
     else:
         print("usage: start [ls]")

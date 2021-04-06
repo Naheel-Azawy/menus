@@ -1,7 +1,11 @@
-from subprocess import Popen, PIPE, STDOUT
+import os
 import sys
+import tempfile
+from subprocess import Popen, PIPE, STDOUT
+from menus.utils import handle_terminal
 
 interface = "dmenu"
+interm = False
 
 # opts:
 # - prompt: str
@@ -91,8 +95,26 @@ def confirm(msg, callback, no_callback=None):
         })
 
 def main(args):
+    if interface == "fzf" and not interm:
+        # dirty and slow... But will go this way for now
+        # TODO: find a clean way to pipe the input to the terminal process
+        fd, path = tempfile.mkstemp()
+        with open(path, "w") as f:
+            for line in sys.stdin:
+                f.write(line)
+        pid = os.getpid()
+        args_str = ""
+        for arg in args:
+            args_str += f"'{arg}' " # will fail for args with "'"
+        cmd = f"python3 {args[0]} --interm face {args_str}"
+        handle_terminal([
+            "sh", "-c", f'res=$({cmd} < "{path}"); echo "$res" | tail -n1 >/proc/{pid}/fd/1'
+        ])
+        os.remove(path)
+        return
+
     opts = {}
-    i = 0
+    i = 1
     while i < len(args):
         if args[i] == "--confirm":
             opts["confirm"] = True
