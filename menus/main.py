@@ -10,6 +10,7 @@ import menus.power
 import menus.hud
 
 HOME = os.getenv("HOME")
+TERMINAL = os.getenv("TERMINAL")
 
 class StartMenu:
     def __init__(self):
@@ -143,13 +144,13 @@ class StartMenu:
             if which(exe):
                 if kind != "pinned":
                     self.inc(exe)
-                if exe in self.tui_apps:
-                    try:
-                        sh.theterm(f"exec {exe}")
-                    except sh.ErrorReturnCode as e:
-                        print(e)
-                else:
-                    sh.Command(exe)()
+                try:
+                    if exe in self.tui_apps:
+                        sh.Command(TERMINAL)(f"exec {exe}", _bg=True)
+                    else:
+                        sh.Command(exe)(_bg=True)
+                except sh.ErrorReturnCode as e:
+                    print(e)
             else:
                 raise ValueError("Couldn't run given command")
 
@@ -272,12 +273,15 @@ class StartMenu:
         return []
 
     def show(self):
-        incremental = os.popen(
-            "man dmenu | grep " +
-            "'dmenu outputs text each time a key is pressed'").read().strip()
-        opts = "-i -l 20"
-        if incremental:
-            opts += " -r"
+        opts = {}
+        if menus.face.interface == "dmenu":
+            incremental = os.popen(
+                "man dmenu | grep " +
+                "'dmenu outputs text each time a key is pressed'").read().strip()
+            dopts = "-i -l 20"
+            if incremental:
+                dopts += " -r"
+            opts["dmenu"] = dopts
 
         pipe = menus.face.pipemenu(opts)
         self.ls(out=pipe.stdin)
@@ -292,20 +296,49 @@ class StartMenu:
         if line:
             self.run(line)
 
+def handle_terminal(arg0, args):
+    try:
+        dim = "95x20"
+        if TERMINAL == "theterm":
+            sh.theterm("-a", f"-c __floatme__|__blurme__ -g {dim}",
+                       "python3", arg0, "--interm", *args)
+        elif TERMINAL == "st":
+            sh.st("-c", "__floatme__|__blurme__",
+                  "-g", dim, "-e", "python3", arg0, "--interm", *args)
+        else:
+            sh.Command(TERMINAL, "-e", "python3", arg0, "--interm", *args)
+    except sh.ErrorReturnCode as e:
+        pass
+    return 0
+
 def main():
+    arg0 = sys.argv[0]
     args = sys.argv[1:]
+
+    menus.face.interface = os.getenv("MENUS_INTERFACE", "dmenu")
+
+    run_in_term = False
+    if len(args) > 0 and args[0] == "--interm":
+        menus.face.interface = "fzf"
+        args = args[1:]
+    elif menus.face.interface == "fzf":
+        run_in_term = True
+
     if len(args) > 0:
         if args[0] == "ls":
             StartMenu().ls()
         elif args[0] == "power":
+            if run_in_term: return handle_terminal(arg0, args)
             return menus.power.main(args[1:])
         elif args[0] == "hud":
             return menus.hud.main(args[1:])
         elif args[0] == "keys":
             return menus.keys.main(args[1:])
         elif args[0] == "face":
+            if run_in_term: return handle_terminal(arg0, args)
             return menus.face.main(args[1:])
     elif len(args) == 0:
+        if run_in_term: return handle_terminal(arg0, args)
         StartMenu().show()
     else:
         print("usage: start [ls]")

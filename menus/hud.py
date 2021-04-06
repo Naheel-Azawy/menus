@@ -328,7 +328,7 @@ def hud_load():
 def run_now():
     i = hud_load()
     if i:
-        pipe = pipemenu("-i -l 20")
+        pipe = pipemenu()
         items, main_bar = i.list()
         if main_bar:
             pipe.stdin.write(main_bar + "\n")
@@ -346,8 +346,4 @@ def main(args):
             hud_daemon()
         elif args[0] == "env":
             print(hud_env)
-    else:
-        if not run_now():
-            print("Could not find a menu interface")
-            return 1
     return 0

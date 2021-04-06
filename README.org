@@ -1,5 +1,5 @@
 * menus
-  Just some menus. A dmenu kind of menus.
+  Just some menus. A dmenu/fzf kind of menus.
 
 ** Usage
    Just run ~menus~. This will show:
@@ -15,6 +15,7 @@
 ** Installation
    First, make sure dependancies are installed:
    - dmenu (preferably with the [[https://tools.suckless.org/dmenu/patches/incremental][incremental patch]])
+   - fzf (optionally)
    - xprop
    - xdotool
    - systemctl (sorry)
@@ -32,6 +33,12 @@
    #+end_src
 
    [[https://github.com/p-e-w/plotinus][plotinus]] is also optionally supported. So, install it if you like. This can be helpful for some GTK programs.
+
+** Config
+   #+begin_src shell-script
+     export MENUS_INTERFACE='fzf'
+     export TUI_APPS='music-player:lf:vis:corona:alsamixer:lyrics:nano:dice:fmz'
+   #+end_src
 
 ** Interesting stuff
    - https://github.com/RafaelBocquet/i3-hud-menu

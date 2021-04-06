@@ -8,7 +8,7 @@ def items():
         "Suspend":
         lambda: sh.systemctl("suspend"),
         "Shutdown":
-        lambda: confirm("Shutdown? ",
+        lambda: confirm("Shutdown?",
                         sh.systemctl.bake("poweroff")),
         "Reboot":
         lambda: confirm("Reboot?",
@@ -37,5 +37,8 @@ def main(args):
         if sel in i:
             i[sel]()
     else:
-        dictmenu(i, "-p 'Power options'")
+        dictmenu(i, opts={
+            "prompt": "Power options",
+            "dmenu": "-i"
+        })
     return 0
