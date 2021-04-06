@@ -9,8 +9,7 @@ def handle_terminal(args):
         dim = "95x20"
         TERMINAL = os.getenv("TERMINAL")
         if TERMINAL == "theterm":
-            #sh.theterm("-a", f"-c __floatme__|__blurme__ -g {dim}", *args)
-            sh.st("-c", "__floatme__|__blurme__", "-g", dim, "-e", *args)
+            sh.theterm("-a", f"-c __floatme__|__blurme__ -g {dim}", "--nocd", *args)
         elif TERMINAL == "st":
             sh.st("-c", "__floatme__|__blurme__", "-g", dim, "-e", *args)
         else:
