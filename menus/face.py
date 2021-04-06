@@ -37,7 +37,7 @@ def dmenu_cmd(opts={}):
 
         if "prompt" in opts:
             if opts["prompt"]:
-                cmd += f" --prompt='{opts['prompt']} '"
+                cmd += f" --prompt='{opts['prompt'].strip()} '"
             else:
                 cmd += " --prompt='> '"
 
@@ -96,7 +96,7 @@ def main(args):
     while i < len(args):
         if args[i] == "--confirm":
             opts["confirm"] = True
-        if args[i] == "--prompt":
+        if args[i] == "--prompt" or args[i] == "-p":
             opts["prompt"] = args[i + 1]
             i += 1
         elif args[i] == "--color":

@@ -12,6 +12,9 @@ import menus.hud
 HOME = os.getenv("HOME")
 TERMINAL = os.getenv("TERMINAL")
 
+def nohup(cmd):
+    return f"nohup {cmd} </dev/null >/dev/null 2>&1 &"
+
 class StartMenu:
     def __init__(self):
         self.cache = f"{HOME}/.cache"
@@ -129,7 +132,7 @@ class StartMenu:
                 self.inc(item, kind)
 
         elif kind == "games":
-            sh.games(run)
+            os.system(nohup(f"games {run}"))
             self.inc(run, kind)
 
         else:
@@ -146,9 +149,9 @@ class StartMenu:
                     self.inc(exe)
                 try:
                     if exe in self.tui_apps:
-                        sh.Command(TERMINAL)(f"exec {exe}", _bg=True)
+                        os.system(nohup(f"{TERMINAL} -e {exe}"))
                     else:
-                        sh.Command(exe)(_bg=True)
+                        os.system(nohup(exe))
                 except sh.ErrorReturnCode as e:
                     print(e)
             else:
