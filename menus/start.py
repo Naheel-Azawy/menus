@@ -10,14 +10,14 @@ import menus.power
 import menus.hud
 from menus.utils import nohup, handle_terminal
 
-HOME = os.getenv("HOME")
-TERMINAL = os.getenv("TERMINAL")
-
 class StartMenu:
-    def __init__(self):
+    def __init__(self, window_id=None):
+        HOME = os.getenv("HOME")
         self.cache = f"{HOME}/.cache"
         self.cache_recent = f"{self.cache}/launcher_recent.json"
         self.cache_bins = f"{self.cache}/dmenu_run"
+
+        self.window_id = window_id
 
         # pinned items appear first
         self.pinned = {
@@ -147,6 +147,7 @@ class StartMenu:
                     self.inc(exe)
                 try:
                     if exe in self.tui_apps:
+                        TERMINAL = os.getenv("TERMINAL")
                         os.system(nohup(f"{TERMINAL} -e {exe}"))
                     else:
                         os.system(nohup(exe))
@@ -192,9 +193,12 @@ class StartMenu:
             printout("pinned", item)
 
         # load hud menu items and print if needed
-        self.hud_interface = menus.hud.hud_load()
+        self.hud_interface = menus.hud.hud_load(self.window_id)
         if self.hud_interface is not None:
-            title = sh.xdotool("getactivewindow", "getwindowname").strip()
+            if self.window_id is None:
+                title = sh.xdotool("getactivewindow", "getwindowname").strip()
+            else:
+                title = sh.xdotool("getwindowname", self.window_id).strip()
             menuitems, mainbar = self.hud_interface.list()
             # print title and main bar if any
             if title:
@@ -298,8 +302,12 @@ class StartMenu:
             self.run(line)
 
 def main(args):
-    if len(args) > 0 and args[0] == "ls":
+    if len(args) > 1 and args[1] == "ls":
         StartMenu().ls()
     else:
-        StartMenu().show()
+        if len(args) > 2 and args[1] == "--winid":
+            window_id = args[2]
+        else:
+            window_id = None
+        StartMenu(window_id).show()
     return 0

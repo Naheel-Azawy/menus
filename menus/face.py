@@ -2,7 +2,7 @@ import os
 import sys
 import tempfile
 from subprocess import Popen, PIPE, STDOUT
-from menus.utils import handle_terminal
+from menus.utils import handle_terminal, set_tmux_title
 
 interface = "dmenu"
 interm = False
@@ -112,6 +112,8 @@ def main(args):
         ])
         os.remove(path)
         return
+
+    set_tmux_title()
 
     opts = {}
     i = 1

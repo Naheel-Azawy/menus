@@ -1,5 +1,6 @@
 import os
 import sh
+import menus.face
 
 def nohup(cmd):
     return f"nohup {cmd} </dev/null >/dev/null 2>&1 &"
@@ -17,3 +18,11 @@ def handle_terminal(args):
     except sh.ErrorReturnCode as e:
         pass
     return 0
+
+def set_tmux_title():
+    if menus.face.interface == "fzf" and \
+       os.getenv("TMUX") is not None:
+        try:
+            sh.tmux("rename-window", "menu")
+        except:
+            pass

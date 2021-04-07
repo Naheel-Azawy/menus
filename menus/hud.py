@@ -311,11 +311,12 @@ class EmacsHUD(HUDInterface):
             cmd = self.actions[item]
             os.system(f"emacsclient -e '({cmd})' &")
 
-def hud_load():
-    try:
-        window_id = sh.xdotool("getactivewindow").strip()
-    except:
-        return None
+def hud_load(window_id=None):
+    if window_id is None:
+        try:
+            window_id = sh.xdotool("getactivewindow").strip()
+        except:
+            return None
     interfaces = [EmacsHUD, PlotinusHUD,
                   GTKHUD, AppMenuHUD]
     for interface in interfaces:
