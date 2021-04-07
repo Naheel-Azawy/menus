@@ -1,5 +1,5 @@
 * menus
-  Just some menus. A dmenu/fzf kind of menus.
+  Just some menus. An fzf/dmenu kind of menus.
 
 ** Usage
    Just run ~menus~. This will show:
@@ -14,8 +14,7 @@
 
 ** Installation
    First, make sure dependancies are installed:
-   - dmenu (preferably with the [[https://tools.suckless.org/dmenu/patches/incremental][incremental patch]])
-   - fzf (optionally)
+   - fzf or dmenu (preferably with the [[https://tools.suckless.org/dmenu/patches/incremental][incremental patch]])
    - xprop
    - xdotool
    - systemctl (sorry)

@@ -4,7 +4,7 @@ import tempfile
 from subprocess import Popen, PIPE, STDOUT
 from menus.utils import handle_terminal, set_tmux_title
 
-interface = "dmenu"
+interface = "fzf"
 interm = False
 
 # opts:
