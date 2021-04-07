@@ -311,6 +311,12 @@ def main():
     elif menus.face.interface == "fzf":
         run_in_term = True
 
+    if os.getenv("TMUX") is not None:
+        try:
+            sh.tmux("rename-window", "menu")
+        except:
+            pass
+
     if len(args) > 0:
         if args[0] == "ls":
             StartMenu().ls()
