@@ -16,5 +16,6 @@ setup(
         "console_scripts": [
             "menus = menus.main:main"
         ]
-    }
+    },
+    scripts=["bin/menus-face"]
 )
