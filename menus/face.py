@@ -4,7 +4,7 @@ import tempfile
 from subprocess import Popen, PIPE, STDOUT
 from menus.utils import handle_terminal, set_tmux_title
 
-interface = "fzf"
+interface = "dmenu"
 interm = False
 
 # opts:
@@ -129,6 +129,10 @@ def main(args):
         elif args[i] == "--dmenu":
             opts["dmenu"] = args[i + 1]
             i += 1
+        else:
+            if "dmenu" not in opts:
+                opts["dmenu"] = ""
+            opts["dmenu"] += f"'{args[i]}' "
         i += 1
 
     if "confirm" in opts:
