@@ -15,7 +15,7 @@ def items():
                         sh.systemctl.bake("reboot")),
         "Logout":
         lambda: confirm("Logout?",
-                        sh.wmctl.bake("kill")),
+                        sh.wm_msg.bake("end")),
         "Lock":
         lambda: sh.lockscreen(),
         "Hibernate":
@@ -26,8 +26,8 @@ def items():
     if which("lockscreen") is None:
         del items["Lock"]
 
-    if which("wmctl") is None:
-        del items["Logout"]
+    #if which("wmctl") is None: # TODO
+    #    del items["Logout"]
     return items
 
 def main(args):

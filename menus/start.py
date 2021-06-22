@@ -206,9 +206,10 @@ class StartMenu:
             if mainbar:
                 printout("menu", mainbar)
             # print recent menu items
-            for item in self.recent["menu"]:
-                if item in menuitems:
-                    printout("menu", item)
+            if "menu" in self.recent:
+                for item in self.recent["menu"]:
+                    if item in menuitems:
+                        printout("menu", item)
             # print other menu items
             for item in menuitems:
                 printout_if_needed("menu", item)
