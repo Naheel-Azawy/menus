@@ -26,7 +26,10 @@ def main():
         elif args[0] == "face":
             return menus.face.main([arg0] + args[1:])
     elif len(args) == 0:
-        window_id = sh.xdotool("getactivewindow").strip()
+        try:
+            window_id = sh.xdotool("getactivewindow").strip()
+        except:
+            window_id = None
         menus.start.StartMenu(window_id).show()
     else:
         print("usage: menus [ARGS]")
