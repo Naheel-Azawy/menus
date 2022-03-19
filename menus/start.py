@@ -293,6 +293,10 @@ class StartMenu:
 
         pipe = menus.face.pipemenu(opts)
         self.ls(out=pipe.stdin)
+
+        if not incremental:
+            pipe.stdin.close()
+
         line = ""
         for line in iter(pipe.stdout.readline, ""):
             line = line.strip()
@@ -300,7 +304,7 @@ class StartMenu:
                 for res in self.query(line):
                     pipe.stdin.write(res + "\n")
                     pipe.stdin.flush()
-        # pipe.stdin.close() # broken pipe, why?
+
         if line:
             self.run(line)
 

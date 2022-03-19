@@ -3,6 +3,8 @@ import sys
 import tempfile
 from subprocess import Popen, PIPE, STDOUT
 
+FONT = os.getenv("FONT", "monospace") + ":pixelsize=19"
+
 interface = "dmenu"
 
 # opts:
@@ -12,6 +14,9 @@ interface = "dmenu"
 def dmenu_cmd(opts={}):
     if interface == "dmenu":
         cmd = "dmenu"
+
+        cmd += f" -fn '{FONT}'"
+        cmd += " -nf '#fff' -nb '#000' -sf '#000' -sb '#fff'"
 
         if "dmenu" in opts:
             dopts = opts["dmenu"]
