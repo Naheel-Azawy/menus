@@ -2,10 +2,8 @@ import os
 import sys
 import tempfile
 from subprocess import Popen, PIPE, STDOUT
-from menus.utils import handle_terminal, set_tmux_title
 
 interface = "dmenu"
-interm = False
 
 # opts:
 # - prompt: str
@@ -26,30 +24,6 @@ def dmenu_cmd(opts={}):
             dopts += " -sb red -sf black -nb black -nf red"
 
         cmd += " " + dopts
-        return cmd
-    elif interface == "fzf":
-        cmd = "fzf"
-        cmd += " --reverse"
-        cmd += " --no-sort"
-        cmd += " --exact"
-        cmd += " --info=hidden"
-        cmd += " --pointer=' '"
-        cmd += " --color=gutter:-1"
-        cmd += " --color=hl:reverse,hl+:reverse"
-        cmd += " --bind=change:first"
-        cmd += " --print-query"
-
-        if "prompt" in opts:
-            if opts["prompt"]:
-                cmd += f" --prompt='{opts['prompt'].strip()} '"
-            else:
-                cmd += " --prompt='> '"
-
-        if "color" in opts and opts["color"] == "red":
-            cmd += " --color='bg+:#ff0000,fg+:#000000,fg:#ff0000,prompt:#ff0000'"
-        else:
-            cmd += " --color='bg+:#ffffff,fg+:#000000,prompt:#ffffff'"
-
         return cmd
     else:
         return None
@@ -95,26 +69,6 @@ def confirm(msg, callback, no_callback=None):
         })
 
 def main(args):
-    if interface == "fzf" and not interm:
-        # dirty and slow... But will go this way for now
-        # TODO: find a clean way to pipe the input to the terminal process
-        fd, path = tempfile.mkstemp()
-        with open(path, "w") as f:
-            for line in sys.stdin:
-                f.write(line)
-        pid = os.getpid()
-        args_str = ""
-        for arg in args:
-            args_str += f"'{arg}' " # will fail for args with "'"
-        cmd = f"python3 {args[0]} --interm face {args_str}"
-        handle_terminal([
-            "sh", "-c", f'res=$({cmd} < "{path}"); echo "$res" | tail -n1 >/proc/{pid}/fd/1'
-        ])
-        os.remove(path)
-        return
-
-    set_tmux_title()
-
     opts = {}
     i = 1
     while i < len(args):

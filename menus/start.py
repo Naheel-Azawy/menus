@@ -8,7 +8,9 @@ import menus.face
 import menus.keys
 import menus.power
 import menus.hud
-from menus.utils import nohup, handle_terminal
+
+def nohup(cmd):
+    return f"nohup {cmd} </dev/null >/dev/null 2>&1 &"
 
 class StartMenu:
     def __init__(self, window_id=None):
