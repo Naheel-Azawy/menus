@@ -15,8 +15,8 @@ def dmenu_cmd(opts={}):
     if interface == "dmenu":
         cmd = "dmenu"
 
-        cmd += f" -fn '{FONT}'"
-        cmd += " -nf '#fff' -nb '#000' -sf '#000' -sb '#fff'"
+        #cmd += f" -fn '{FONT}'"
+        #cmd += " -nf '#fff' -nb '#000' -sf '#000' -sb '#fff'"
 
         if "dmenu" in opts:
             dopts = opts["dmenu"]
