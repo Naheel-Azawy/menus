@@ -1,3 +1,4 @@
+import sh
 import os
 import sys
 import tempfile
@@ -6,6 +7,7 @@ from subprocess import Popen, PIPE, STDOUT
 FONT = os.getenv("FONT", "monospace") + ":pixelsize=19"
 
 interface = "dmenu"
+n = "naheel" in sh.dmenu("-v") # personal dmenu fork
 
 # opts:
 # - prompt: str
@@ -62,16 +64,17 @@ def dictmenu(d, opts={}):
 
 # example:
 # confirm("Dude sure?!", lambda: print("yep"))
-def confirm(msg, callback, no_callback=None):
+def confirm(msg, callback, no_callback=None, opts={}):
     if not msg:
         msg = "Are you sure?"
+    opts["prompt"] = msg
+    opts["color"] = "red"
+    if "dmenu" in opts:
+        opts["dmenu"] = "-i " + opts["dmenu"]
+    else:
+        opts["dmenu"] = "-i"
     dictmenu(
-        {"Yes": callback, "No": no_callback},
-        opts={
-            "prompt": msg,
-            "color": "red",
-            "dmenu": "-i"
-        })
+        {"Yes": callback, "No": no_callback}, opts)
 
 def main(args):
     opts = {}

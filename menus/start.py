@@ -289,6 +289,8 @@ class StartMenu:
             dopts = "-i -l 20"
             if incremental:
                 dopts += " -r"
+            if menus.face.n:
+                dopts += " -L top-left -y 30"
             opts["dmenu"] = dopts
 
         pipe = menus.face.pipemenu(opts)
