@@ -44,11 +44,10 @@ def main(args):
             i[sel]()
     else:
         if n:
-            conf_opts = dmenu_loc + "-i -l 10"
+            conf_opts = dmenu_loc + "-i -l 3 -c 2 "
         else:
             conf_opts = "-i"
         dictmenu(i, opts={
-            "prompt": "Power options",
             "dmenu": conf_opts
         })
     return 0
