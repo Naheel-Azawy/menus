@@ -150,7 +150,8 @@ class StartMenu:
                 try:
                     if exe in self.tui_apps:
                         TERMINAL = os.getenv("TERMINAL")
-                        os.system(nohup(f"{TERMINAL} -e {exe}"))
+                        cmd = f"{TERMINAL} -e 'env TERM=screen-256color {exe}'"
+                        os.system(nohup(cmd))
                     else:
                         os.system(nohup(exe))
                 except sh.ErrorReturnCode as e:
@@ -195,7 +196,8 @@ class StartMenu:
             printout("pinned", item)
 
         # load hud menu items and print if needed
-        self.hud_interface = menus.hud.hud_load(self.window_id)
+        # self.hud_interface = menus.hud.hud_load(self.window_id)
+        self.hud_interface = None # delete?
         if self.hud_interface is not None:
             if self.window_id is None:
                 title = sh.xdotool("getactivewindow", "getwindowname").strip()
@@ -286,7 +288,7 @@ class StartMenu:
             incremental = os.popen(
                 "man dmenu | grep " +
                 "'dmenu outputs text each time a key is pressed'").read().strip()
-            dopts = "-i -l 20"
+            dopts = "-i -l 20 -c 3"
             if incremental:
                 dopts += " -r"
             if menus.face.n:
