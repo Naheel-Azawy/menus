@@ -184,6 +184,8 @@ class StartMenu:
 
         # print to `out`
         def printout(kind, item):
+            if len(item) == 0:
+                return
             out.write(ident(kind) + item + "\n")
 
         # print only if not printed before
